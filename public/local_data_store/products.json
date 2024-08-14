@@ -1,0 +1,53 @@
+{
+    "products": [
+      {
+        "id": "001",
+        "title": "Acme Classic T-Shirt",
+        "description": "A classic cotton t-shirt",
+        "variants": [
+          {
+            "id": "00101",
+            "title": "Acme Classic T-Shirt - Small",
+            "price": "19.99",
+            "availableForSale": true
+          },
+          {
+            "id": "00102",
+            "title": "Acme Classic T-Shirt - Medium",
+            "price": "19.99",
+            "availableForSale": true
+          }
+        ],
+        "images": [
+          {
+            "url": "path/to/image.jpg",
+            "altText": "A cool t-shirt",
+            "width": 500,
+            "height": 500
+          }
+        ]
+      },
+      {
+        "id": "002",
+        "title": "Acme Vintage Hoodie",
+        "description": "A warm, comfy hoodie",
+        "variants": [
+          {
+            "id": "00201",
+            "title": "Acme Vintage Hoodie - Large",
+            "price": "39.99",
+            "availableForSale": false
+          }
+        ],
+        "images": [
+          {
+            "url": "path/to/hoodie.jpg",
+            "altText": "A vintage hoodie",
+            "width": 500,
+            "height": 500
+          }
+        ]
+      }
+    ]
+  }
+  
