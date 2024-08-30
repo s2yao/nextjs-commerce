@@ -19,4 +19,6 @@ pnpm install
 pnpm dev
 ```
 
+Then "npm run dev"
+
 Your app should now be running on [localhost:3000](http://localhost:3000/).
