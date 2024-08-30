@@ -204,16 +204,42 @@ const reshapeProducts = (products: ShopifyProduct[]) => {
 export async function createCart(): Promise<Cart> {
   // Static response to simulate the creation of a new cart
   return {
-      id: "newCartId123",  // Example new cart ID
-      checkoutUrl: "https://example.com/checkout",
-      cost: {
-          subtotalAmount: { amount: "0.00", currencyCode: "USD" },
-          totalAmount: { amount: "0.00", currencyCode: "USD" },
-          totalTaxAmount: { amount: "0.00", currencyCode: "USD" }
-      },
-      lines: [],  // Empty as it's a new cart
-      totalQuantity: 0  // No items in the new cart
-  };
+    id: "newCartId123",  // Example new cart ID
+    checkoutUrl: "https://example.com/checkout",
+    cost: {
+        subtotalAmount: { amount: "60.00", currencyCode: "USD" },
+        totalAmount: { amount: "70.00", currencyCode: "USD" }, // Assuming tax is calculated
+        totalTaxAmount: { amount: "10.00", currencyCode: "USD" }
+    },
+    lines: [
+      {
+        id: "line1",
+        quantity: 5,
+        cost: {
+          totalAmount: { amount: "60.00", currencyCode: "USD" }
+        },
+        merchandise: {
+          id: "002",
+          title: "Acme Vintage Hoodie",
+          selectedOptions: [
+              { name: "Size", value: "Large" }
+          ],
+          product: {
+              id: "002",
+              handle: "vintage-hoodie",
+              title: "Acme Vintage Hoodie",
+              featuredImage: {
+                  url: "/local_data_store/hoodie-1.avif", // Make sure the path to the image is correct
+                  altText: "A vintage hoodie",
+                  width: 500,
+                  height: 500
+              }
+          }
+        }
+      }
+    ],  // Starting with one hoodie in the cart
+    totalQuantity: 1  // Only one item in the new cart
+};
 }
 
 export async function addToCart(
@@ -408,41 +434,16 @@ export async function getCart(cartId: string | undefined): Promise<Cart | undefi
                       }
                   }
               }
-          },
-          {
-              id: "line2",
-              quantity: 1,
-              cost: {
-                  totalAmount: { amount: "60.00", currencyCode: "USD" }
-              },
-              merchandise: {
-                  id: "002",
-                  title: "Acme Vintage Hoodie",
-                  selectedOptions: [
-                      { name: "Size", value: "Large" }
-                  ],
-                  product: {
-                      id: "002",
-                      handle: "vintage-hoodie",
-                      title: "Acme Vintage Hoodie",
-                      featuredImage: {
-                          url: "/local_data_store/t-shirt-1.avif",
-                          altText: "A vintage hoodie",
-                          width: 500,
-                          height: 500
-                      }
-                  }
-              }
           }
       ],
-      totalQuantity: 3
+      totalQuantity: 2
   };
 }
 
 export async function getCollection(handle: string): Promise<Collection | undefined> {
   // Static collections mapped by handle
   const collections: Record<string, Collection> = {
-      'spring-2020': {
+      'All': {
           handle: 'spring-2020',
           title: 'Spring 2020 Collection',
           description: 'Explore our exciting new collection for Spring 2020!',
@@ -452,17 +453,6 @@ export async function getCollection(handle: string): Promise<Collection | undefi
           },
           updatedAt: new Date().toISOString(),
           path: '/collections/spring-2020'
-      },
-      'winter-2020': {
-          handle: 'winter-2020',
-          title: 'Winter 2020 Collection',
-          description: 'Get cozy with our Winter 2020 collection of warm knits and comfy sweaters.',
-          seo: {
-              title: 'Winter 2020 Collection',
-              description: 'Discover our warm and cozy winter collection to keep you warm this season.'
-          },
-          updatedAt: new Date().toISOString(),
-          path: '/collections/winter-2020'
       }
   };
 
@@ -492,11 +482,13 @@ export async function getCollectionProducts({
         availableForSale: true,
         description: "A classic cotton t-shirt",
         descriptionHtml: "<p>A classic cotton t-shirt</p>", // HTML version of the description
-        options: [{
-            id: "option1",
-            name: "Size",
-            values: ["Small", "Medium", "Large"]
-        }],
+        options: [
+            {
+                id: "option1",
+                name: "Size",
+                values: ["Small", "Medium", "Large"]
+            }
+        ],
         priceRange: {
             maxVariantPrice: { amount: "19.99", currencyCode: "USD" },
             minVariantPrice: { amount: "19.99", currencyCode: "USD" }
@@ -515,13 +507,163 @@ export async function getCollectionProducts({
             }
         }],
         images: [{
-            url: "p/local_data_store/t-shirt-1.avif",
+            url: "/local_data_store/t-shirt-1.avif",
             altText: "A cool t-shirt",
             width: 500,
             height: 500
         }],
         featuredImage: {
             url: "/local_data_store/t-shirt-1.avif",
+            altText: "A cool t-shirt",
+            width: 500,
+            height: 500
+        },
+        seo: {
+            title: "Buy Classic T-Shirt",
+            description: "Comfortable and stylish classic cotton t-shirts"
+        },
+        tags: ["fashion", "cotton", "t-shirt"],
+        updatedAt: new Date().toISOString()
+    },
+    {
+        id: "001",
+        handle: "acme-cup",
+        title: "Acme Cup",
+        availableForSale: true,
+        description: "A cup",
+        descriptionHtml: "<p>A cup</p>", // HTML version of the description
+        options: [
+            {
+                id: "option1",
+                name: "Size",
+                values: ["Small", "Medium", "Large"]
+            }
+        ],
+        priceRange: {
+            maxVariantPrice: { amount: "19.99", currencyCode: "USD" },
+            minVariantPrice: { amount: "19.99", currencyCode: "USD" }
+        },
+        variants: [{
+            id: "00101",
+            title: "Small",
+            availableForSale: true,
+            selectedOptions: [{
+                name: "Size",
+                value: "Small"
+            }],
+            price: {
+                amount: "19.99",
+                currencyCode: "USD"
+            }
+        }],
+        images: [{
+            url: "/local_data_store/image copy.png",
+            altText: "A cool t-shirt",
+            width: 500,
+            height: 500
+        }],
+        featuredImage: {
+            url: "/local_data_store/image copy.png",
+            altText: "A cool t-shirt",
+            width: 500,
+            height: 500
+        },
+        seo: {
+            title: "Buy Classic T-Shirt",
+            description: "Comfortable and stylish classic cotton t-shirts"
+        },
+        tags: ["fashion", "cotton", "t-shirt"],
+        updatedAt: new Date().toISOString()
+    },
+    {
+        id: "001",
+        handle: "acme-drawstring-bag",
+        title: "Acme Drawstring Bag",
+        availableForSale: true,
+        description: "A classic cotton t-shirt",
+        descriptionHtml: "<p>A classic cotton t-shirt</p>", // HTML version of the description
+        options: [
+            {
+                id: "option1",
+                name: "Size",
+                values: ["Small", "Medium", "Large"]
+            }
+        ],
+        priceRange: {
+            maxVariantPrice: { amount: "19.99", currencyCode: "USD" },
+            minVariantPrice: { amount: "19.99", currencyCode: "USD" }
+        },
+        variants: [{
+            id: "00101",
+            title: "Small",
+            availableForSale: true,
+            selectedOptions: [{
+                name: "Size",
+                value: "Small"
+            }],
+            price: {
+                amount: "19.99",
+                currencyCode: "USD"
+            }
+        }],
+        images: [{
+            url: "/local_data_store/image.png",
+            altText: "A cool t-shirt",
+            width: 500,
+            height: 500
+        }],
+        featuredImage: {
+            url: "/local_data_store/image.png",
+            altText: "A cool t-shirt",
+            width: 500,
+            height: 500
+        },
+        seo: {
+            title: "Buy Classic T-Shirt",
+            description: "Comfortable and stylish classic cotton t-shirts"
+        },
+        tags: ["fashion", "cotton", "t-shirt"],
+        updatedAt: new Date().toISOString()
+    },
+    {
+        id: "001",
+        handle: "acme-drawstring-bag",
+        title: "Acme Drawstring Bag",
+        availableForSale: true,
+        description: "A classic cotton t-shirt",
+        descriptionHtml: "<p>A classic cotton t-shirt</p>", // HTML version of the description
+        options: [
+            {
+                id: "option1",
+                name: "Size",
+                values: ["Small", "Medium", "Large"]
+            }
+        ],
+        priceRange: {
+            maxVariantPrice: { amount: "19.99", currencyCode: "USD" },
+            minVariantPrice: { amount: "19.99", currencyCode: "USD" }
+        },
+        variants: [{
+            id: "00101",
+            title: "Small",
+            availableForSale: true,
+            selectedOptions: [{
+                name: "Size",
+                value: "Small"
+            }],
+            price: {
+                amount: "19.99",
+                currencyCode: "USD"
+            }
+        }],
+        images: [{
+            url: "/local_data_store/image.png",
+            altText: "A cool t-shirt",
+            width: 500,
+            height: 500
+        }],
+        featuredImage: {
+            url: "/local_data_store/image.png",
             altText: "A cool t-shirt",
             width: 500,
             height: 500
@@ -565,28 +707,6 @@ export async function getCollections(): Promise<Collection[]> {
           },
           path: '/search',
           updatedAt: new Date().toISOString()
-      },
-      {
-          handle: 'spring-2020',
-          title: 'Spring 2020 Collection',
-          description: 'Explore our exciting new collection for Spring 2020!',
-          seo: {
-              title: 'Spring 2020 Collection',
-              description: 'Browse our Spring 2020 collection featuring vibrant colors and fresh designs.'
-          },
-          updatedAt: new Date().toISOString(),
-          path: '/collections/spring-2020'
-      },
-      {
-          handle: 'winter-2020',
-          title: 'Winter 2020 Collection',
-          description: 'Get cozy with our Winter 2020 collection of warm knits and comfy sweaters.',
-          seo: {
-              title: 'Winter 2020 Collection',
-              description: 'Discover our warm and cozy winter collection to keep you warm this season.'
-          },
-          updatedAt: new Date().toISOString(),
-          path: '/collections/winter-2020'
       }
       // Add more collections as needed
   ];
@@ -595,19 +715,23 @@ export async function getCollections(): Promise<Collection[]> {
   return staticCollections.filter(collection => !collection.handle.startsWith('hidden'));
 }
 
+
+// The Text on the header and footer
 export async function getMenu(handle: string): Promise<Menu[]> {
   // Define a mock menu based on handles to simulate different responses
   const menus: Record<string, Menu[]> = {
-      'main': [
-          { title: 'Home', path: '/home' },
-          { title: 'Shop', path: '/search/shop' },
-          { title: 'About', path: '/about' }
-      ],
-      'footer': [
-          { title: 'Contact', path: '/contact' },
-          { title: 'Privacy', path: '/privacy' }
-      ]
-  };
+    'next-js-frontend-footer-menu': [
+        // Define the menu items you want for this footer
+        { title: 'Home', path: '/' },
+        { title: 'About Us', path: '/about' },
+        { title: 'Contact', path: '/contact' },
+        // { title: 'Terms', path: '/terms' }
+    ],
+    'next-js-frontend-header-menu': [
+        // Define the menu items for the header
+        { title: 'All', path: '/search' }
+    ]
+};
 
   // Mimic response transformation that would normally be done after fetching
   return menus[handle]?.map(item => ({
@@ -619,11 +743,11 @@ export async function getMenu(handle: string): Promise<Menu[]> {
 export async function getPage(handle: string): Promise<Page> {
   // Define static pages mapped by handle
   const staticPages: Record<string, Page> = {
-      'about-us': {
+      'about': {
           id: '1',
           title: 'About Us',
-          handle: 'about-us',
-          body: 'This is the body text of the About Us page.',
+          handle: 'about',
+          body: 'This is the shop for ecoedu society. <br><br>Welcome to the EcoEdu Society, a non-profit organization dedicated to harnessing artificial intelligence and digital innovation to promote sustainable development and ecological awareness. Our mission is to empower communities and businesses through social media advocacy, educational consulting in AI, and transformative digital services, all aimed at fostering a greener, more sustainable future. Join us in driving positive change for our',
           bodySummary: 'Short summary of the About Us page.',
           seo: {
               title: 'About Us - Our Company',
@@ -708,62 +832,193 @@ export async function getPages(): Promise<Page[]> {
 export async function getProduct(handle: string): Promise<Product | undefined> {
   // Define static products mapped by handle
   const staticProducts: Record<string, Product> = {
-      'classic-t-shirt': {
-          id: '001',
-          handle: 'classic-t-shirt',
-          title: 'Classic T-Shirt',
-          description: 'A perfect t-shirt for everyday wear.',
-          descriptionHtml: '<p>A perfect t-shirt for everyday wear.</p>', // HTML version of the description
-          availableForSale: true,
-          options: [{
-              id: 'opt1',
-              name: 'Size',
-              values: ['Small', 'Medium', 'Large']
-          }],
-          priceRange: {
-              maxVariantPrice: {
-                  amount: '19.99',
-                  currencyCode: 'USD'
-              },
-              minVariantPrice: {
-                  amount: '19.99',
-                  currencyCode: 'USD'
-              }
-          },
-          variants: [{
-              id: '001-small',
-              title: 'Small Size',
-              availableForSale: true,
-              selectedOptions: [{
-                  name: 'Size',
-                  value: 'Small'
-              }],
-              price: {
-                  amount: '19.99',
-                  currencyCode: 'USD'
-              }
-          }],
-          images: [{
-              url: '/local_data_store/t-shirt-1.avif',
-              altText: 'Classic T-Shirt',
-              width: 500,
-              height: 500
-          }],
-          featuredImage: {
-              url: '/local_data_store/t-shirt-1.avif',
-              altText: 'Classic T-Shirt',
-              width: 500,
-              height: 500
-          },
-          seo: {
-              title: 'Buy Classic T-Shirt',
-              description: 'Comfortable and stylish classic cotton t-shirts'
-          },
-          tags: ['fashion', 'cotton', 't-shirt'],
-          updatedAt: new Date().toISOString()
-      },
-      // More products can be added here
-  };
+    "classic-t-shirt": {
+        "id": "001",
+        "handle": "classic-t-shirt",
+        "title": "Classic T-Shirt",
+        "description": "A perfect t-shirt for everyday wear.",
+        "descriptionHtml": "<p>A perfect t-shirt for everyday wear.</p>",
+        "availableForSale": true,
+        "options": [
+            {
+                "id": "opt1",
+                "name": "Size",
+                "values": ["Small", "Medium", "Large"]
+            }
+        ],
+        "priceRange": {
+            "maxVariantPrice": {
+                "amount": "19.99",
+                "currencyCode": "USD"
+            },
+            "minVariantPrice": {
+                "amount": "19.99",
+                "currencyCode": "USD"
+            }
+        },
+        "variants": [
+            {
+                "id": "001-small",
+                "title": "Small Size",
+                "availableForSale": true,
+                "selectedOptions": [
+                    {
+                        "name": "Size",
+                        "value": "Small"
+                    }
+                ],
+                "price": {
+                    "amount": "19.99",
+                    "currencyCode": "USD"
+                }
+            }
+        ],
+        "images": [
+            {
+                "url": "/local_data_store/t-shirt-1.avif",
+                "altText": "Classic T-Shirt",
+                "width": 500,
+                "height": 500
+            }
+        ],
+        "featuredImage": {
+            "url": "/local_data_store/t-shirt-1.avif",
+            "altText": "Classic T-Shirt",
+            "width": 500,
+            "height": 500
+        },
+        "seo": {
+            "title": "Buy Classic T-Shirt",
+            "description": "Comfortable and stylish classic cotton t-shirts"
+        },
+        "tags": ["fashion", "cotton", "t-shirt"],
+        "updatedAt": new Date().toISOString()
+    },
+    "acme-cup": {
+        "id": "002",
+        "handle": "acme-cup",
+        "title": "Acme Cup",
+        "description": "A stylish cup for all your drinking needs.",
+        "descriptionHtml": "<p>A stylish cup for all your drinking needs.</p>",
+        "availableForSale": true,
+        "options": [
+            {
+                "id": "opt1",
+                "name": "Size",
+                "values": ["Small", "Medium", "Large"]
+            }
+        ],
+        "priceRange": {
+            "maxVariantPrice": {
+                "amount": "9.99",
+                "currencyCode": "USD"
+            },
+            "minVariantPrice": {
+                "amount": "19.99",
+                "currencyCode": "USD"
+            }
+        },
+        "variants": [
+            {
+                "id": "002-small",
+                "title": "Small Size",
+                "availableForSale": true,
+                "selectedOptions": [
+                    {
+                        "name": "Size",
+                        "value": "Small"
+                    }
+                ],
+                "price": {
+                    "amount": "19.99",
+                    "currencyCode": "USD"
+                }
+            }
+        ],
+        "images": [
+            {
+                "url": "/local_data_store/image copy.png",
+                "altText": "Acme Cup",
+                "width": 500,
+                "height": 500
+            }
+        ],
+        "featuredImage": {
+            "url": "/local_data_store/image copy.png",
+            "altText": "Acme Cup",
+            "width": 500,
+            "height": 500
+        },
+        "seo": {
+            "title": "Buy Acme Cup",
+            "description": "Discover our stylish and durable Acme cups."
+        },
+        "tags": ["home", "cup", "acme"],
+        "updatedAt": new Date().toISOString()
+    },
+    "acme-drawstring-bag": {
+        "id": "003",
+        "handle": "acme-drawstring-bag",
+        "title": "Acme Drawstring Bag",
+        "description": "Perfect for on-the-go storage of your essentials.",
+        "descriptionHtml": "<p>Perfect for on-the-go storage of your essentials.</p>",
+        "availableForSale": true,
+        "options": [
+            {
+                "id": "opt1",
+                "name": "Size",
+                "values": ["Small", "Medium", "Large"]
+            }
+        ],
+        "priceRange": {
+            "maxVariantPrice": {
+                "amount": "14.99",
+                "currencyCode": "USD"
+            },
+            "minVariantPrice": {
+                "amount": "14.99",
+                "currencyCode": "USD"
+            }
+        },
+        "variants": [
+            {
+                "id": "003-small",
+                "title": "Small Size",
+                "availableForSale": true,
+                "selectedOptions": [
+                    {
+                        "name": "Size",
+                        "value": "Small"
+                    }
+                ],
+                "price": {
+                    "amount": "14.99",
+                    "currencyCode": "USD"
+                }
+            }
+        ],
+        "images": [
+            {
+                "url": "/local_data_store/image.png",
+                "altText": "Acme Drawstring Bag",
+                "width": 500,
+                "height": 500
+            }
+        ],
+        "featuredImage": {
+            "url": "/local_data_store/image.png",
+            "altText": "Acme Drawstring Bag",
+            "width": 500,
+            "height": 500
+        },
+        "seo": {
+            "title": "Buy Acme Drawstring Bag",
+            "description": "Your perfect travel companion, our drawstring bags."
+        },
+        "tags": ["fashion", "bag", "drawstring"],
+        "updatedAt": new Date().toISOString()
+    }
+}
 
   // Return the product if found, otherwise undefined
   return staticProducts[handle];

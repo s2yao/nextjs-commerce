@@ -1,0 +1,17 @@
+.content {
+    width: 80%;
+    margin: 20px;
+}
+
+.qrCode { /* Changed from qr-code to qrCode for CSS Module compatibility */
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    width: 200px;
+    text-align: center;
+}
+
+.qrCode img {
+    width: 100%;
+    max-width: 100px;
+}

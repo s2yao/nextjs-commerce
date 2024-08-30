@@ -12,7 +12,7 @@ export default async function Footer() {
   const copyrightDate = 2023 + (currentYear > 2023 ? `-${currentYear}` : '');
   const skeleton = 'w-full h-6 animate-pulse rounded bg-neutral-200 dark:bg-neutral-700';
   const menu = await getMenu('next-js-frontend-footer-menu');
-  const copyrightName = COMPANY_NAME || SITE_NAME || '';
+  const copyrightName = "Ecoedu Society" || "ACME STORE" || '';
 
   return (
     <footer className="text-sm text-neutral-500 dark:text-neutral-400">
@@ -60,9 +60,9 @@ export default async function Footer() {
             <a href="https://github.com/vercel/commerce">View the source</a>
           </p>
           <p className="md:ml-auto">
-            <a href="https://vercel.com" className="text-black dark:text-white">
-              Created by ▲ Vercel
-            </a>
+            {/* <a className="text-black dark:text-white">
+              Created by Genius
+            </a> */}
           </p>
         </div>
       </div>
