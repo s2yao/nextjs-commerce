@@ -436,14 +436,14 @@ export async function getCart(cartId: string | undefined): Promise<Cart | undefi
               }
           }
       ],
-      totalQuantity: 2
+      totalQuantity: 0
   };
 }
 
 export async function getCollection(handle: string): Promise<Collection | undefined> {
   // Static collections mapped by handle
   const collections: Record<string, Collection> = {
-      'All': {
+      'spring-2020': {
           handle: 'spring-2020',
           title: 'Spring 2020 Collection',
           description: 'Explore our exciting new collection for Spring 2020!',
@@ -453,6 +453,17 @@ export async function getCollection(handle: string): Promise<Collection | undefi
           },
           updatedAt: new Date().toISOString(),
           path: '/collections/spring-2020'
+      },
+      'winter-2020': {
+          handle: 'winter-2020',
+          title: 'Winter 2020 Collection',
+          description: 'Get cozy with our Winter 2020 collection of warm knits and comfy sweaters.',
+          seo: {
+              title: 'Winter 2020 Collection',
+              description: 'Discover our warm and cozy winter collection to keep you warm this season.'
+          },
+          updatedAt: new Date().toISOString(),
+          path: '/collections/winter-2020'
       }
   };
 
@@ -465,6 +476,7 @@ function isValidProductKey(key: any): key is keyof Product {
   return ["id", "handle", "title", "availableForSale", "description", "descriptionHtml", "options", "priceRange", "variants", "images", "featuredImage", "seo", "tags", "updatedAt"].includes(key);
 }
 
+// All the products
 export async function getCollectionProducts({
   collection,
   reverse,
@@ -694,6 +706,7 @@ export async function getCollectionProducts({
     return staticProducts;
 }
 
+// different types of collection
 export async function getCollections(): Promise<Collection[]> {
   // Define static collections
   const staticCollections: Collection[] = [
@@ -781,6 +794,7 @@ export async function getPage(handle: string): Promise<Page> {
   }
 }
 
+// the extra pages
 export async function getPages(): Promise<Page[]> {
   // Define a static array of Page objects
   const staticPages: Page[] = [
@@ -829,6 +843,7 @@ export async function getPages(): Promise<Page[]> {
   return staticPages;
 }
 
+// handles the page
 export async function getProduct(handle: string): Promise<Product | undefined> {
   // Define static products mapped by handle
   const staticProducts: Record<string, Product> = {
@@ -1024,74 +1039,6 @@ export async function getProduct(handle: string): Promise<Product | undefined> {
   return staticProducts[handle];
 }
 
-export async function getProductRecommendations(productId: string): Promise<Product[]> {
-  // Define static product recommendations based on a hypothetical product ID
-  const staticProductRecommendations: Record<string, Product[]> = {
-      '001': [
-          {
-              id: '002',
-              handle: 'vintage-hoodie',
-              title: 'Vintage Hoodie',
-              description: 'A cozy hoodie for chilly evenings.',
-              availableForSale: true,
-              descriptionHtml: '<p>A cozy hoodie for chilly evenings.</p>',
-              options: [{
-                  id: 'opt2',
-                  name: 'Size',
-                  values: ['Small', 'Medium', 'Large']
-              }],
-              priceRange: {
-                  maxVariantPrice: {
-                      amount: '39.99',
-                      currencyCode: 'USD'
-                  },
-                  minVariantPrice: {
-                      amount: '39.99',
-                      currencyCode: 'USD'
-                  }
-              },
-              variants: [{
-                  id: '002-large',
-                  title: 'Large Size',
-                  availableForSale: true,
-                  selectedOptions: [{
-                      name: 'Size',
-                      value: 'Large'
-                  }],
-                  price: {
-                      amount: '39.99',
-                      currencyCode: 'USD'
-                  }
-              }],
-              images: [{
-                  url: '/local_data_store/t-shirt-1.avif',
-                  altText: 'Vintage Hoodie',
-                  width: 500,
-                  height: 500
-              }],
-              featuredImage: {
-                  url: '/local_data_store/t-shirt-1.avif',
-                  altText: 'Feature image of Vintage Hoodie',
-                  width: 500,
-                  height: 500
-              },
-              seo: {
-                  title: 'Buy Vintage Hoodie',
-                  description: 'Stay warm with our vintage hoodies.'
-              },
-              tags: ['hoodie', 'vintage', 'winter'],
-              updatedAt: new Date().toISOString()
-          },
-          // Additional recommended products can be added here
-      ],
-      // Different recommendations for other product IDs can be added
-  };
-
-  // Return the recommendations for the given product ID, or an empty array if none are found
-  return staticProductRecommendations[productId] || [];
-}
-
-
 
 
 
@@ -1100,6 +1047,7 @@ function isKeyOfProduct(key: any): key is keyof Product {
   return ["id", "handle", "title", "description", "availableForSale", "descriptionHtml", "options", "priceRange", "variants", "images", "seo", "tags", "updatedAt"].includes(key);
 }
 
+// The function that handles searching
 export async function getProducts({
   query,
   reverse,
@@ -1110,63 +1058,7 @@ export async function getProducts({
   sortKey?: string;
 }): Promise<Product[]> {
     // Example static products
-    const staticProducts: Product[] = [
-      {
-          id: '001',
-          handle: 'classic-t-shirt',
-          title: 'Classic T-Shirt',
-          description: 'A perfect t-shirt for everyday wear.',
-          availableForSale: true,
-          descriptionHtml: '<p>A perfect t-shirt for everyday wear.</p>',
-          options: [{
-              id: 'opt1',
-              name: 'Size',
-              values: ['Small', 'Medium', 'Large']
-          }],
-          priceRange: {
-              maxVariantPrice: {
-                  amount: '19.99',
-                  currencyCode: 'USD'
-              },
-              minVariantPrice: {
-                  amount: '19.99',
-                  currencyCode: 'USD'
-              }
-          },
-          variants: [{
-              id: '001-small',
-              title: 'Small Size',
-              availableForSale: true,
-              selectedOptions: [{
-                  name: 'Size',
-                  value: 'Small'
-              }],
-              price: {
-                  amount: '19.99',
-                  currencyCode: 'USD'
-              }
-          }],
-          images: [{
-              url: '/local_data_store/t-shirt-1.avif',
-              altText: 'Classic T-Shirt',
-              width: 500,
-              height: 500
-          }],
-          featuredImage: {
-              url: '/local_data_store/t-shirt-1.avif',
-              altText: 'Feature image of Classic T-Shirt',
-              width: 500,
-              height: 500
-          },
-          seo: {
-              title: 'Buy Classic T-Shirt',
-              description: 'Comfortable and stylish classic cotton t-shirts'
-          },
-          tags: ['fashion', 'cotton', 't-shirt'],
-          updatedAt: new Date().toISOString()
-      },
-      // Additional static products can be added here
-  ];
+    const staticProducts: Product[] = await getCollectionProducts({ collection: 'hidden-homepage-featured-items' });
 
     // Filter products based on the query if provided
     let filteredProducts = query ? staticProducts.filter(product => product.title.toLowerCase().includes(query.toLowerCase()) || product.description.toLowerCase().includes(query.toLowerCase())) : staticProducts;
